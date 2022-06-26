@@ -1,0 +1,45 @@
+services:
+  #If you need replicas of the containers, copy and past. At this moment,
+  #DockerComposeV2's "replica" does not work as DockerComposeV1's
+  frontend:
+    container_name: angularfrontend
+    build:
+      context: ./AngularFrontend
+      args: [BRANCH=develop]
+      dockerfile: ./Dockerfile
+  nginx:
+    container_name: middlenginx
+    image: nginx:stable-alpine
+    expose:
+      - "80"
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.middle.conf:/etc/nginx/conf.d/default.conf:rw
+    depends_on:
+      - nodebackend
+  backend:
+    container_name: nodebackend
+    build:
+      context: ./NodeBackend
+      args: [TAG=fermium]
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    container_name: postgres
+    image: postgres:14
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+      - ./pgdata:/var/lib/postgres/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+      - APP_DB_USER=docker
+      - APP_DB_PASS=docker
+      - APP_DB_NAME=docker
