@@ -91,4 +91,4 @@ If you find any bug or just want to give your feedback (remember the ⭐ ^^), **
 
 ## Version control 📝
 
-- 0.0.0 - Repository created - 26/06/2022
+- [v1.0 - Current](https://github.com/Inushin/dockerAngularNginxNodePostgreSQL/tree/v1.0) - Repository created - 26/06/2022
