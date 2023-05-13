@@ -1,12 +1,10 @@
 # Stage 1: Build frontend
-FROM node:fermium as build-stage
+FROM node:18.16.0-alpine3.17 as build-stage
 WORKDIR ./app
 COPY ./package*.json /app/
 RUN npm ci
 COPY ./ /app/
-# Create Angular environment files in build time based in BRANCH and BUILD args
-ARG BRANCH
-RUN node set-env.js $BRANCH
+
 RUN npm run build -- --output-path=./dist/out --output-hashing=all
 
 # Stage 2: Serve it using Ngnix
