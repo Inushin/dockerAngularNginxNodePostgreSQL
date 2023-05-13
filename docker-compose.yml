@@ -5,7 +5,6 @@ services:
     container_name: angularfrontend
     build:
       context: ./AngularFrontend
-      args: [BRANCH=develop]
       dockerfile: ./Dockerfile
   nginx:
     container_name: middlenginx
@@ -17,12 +16,11 @@ services:
     volumes:
       - ./nginx.middle.conf:/etc/nginx/conf.d/default.conf:rw
     depends_on:
-      - nodebackend
+      - backend
   backend:
     container_name: nodebackend
     build:
       context: ./NodeBackend
-      args: [TAG=fermium]
       dockerfile: ./Dockerfile
     ports:
       - "3000:3000"
